@@ -54,18 +54,26 @@ export default {
         this.$axios.post('/login', body)
           .then((response) => {
             console.log('Login exitoso:', response.data)
+            // Aquí podrías redirigir al usuario o hacer alguna otra acción
           })
           .catch((error) => {
             console.error('Error en el login:', error)
+            const errorMessage = error.response?.data?.message || 'Error en el login. Inténtelo de nuevo.'
+            // Emitir el evento para mostrar la alerta con el error del backend
+            this.$nuxt.$emit('show-alert', {
+              color: 'red',
+              type: 'error',
+              message: errorMessage,
+              icon: 'mdi-alert-circle'
+            })
           })
       } else {
-        // comentario
-        this.$emit('show-alert', {
-          showAlert: true,
-          color: 'red',
-          type: 'error',
+        // Emitir el evento para mostrar una alerta de validación
+        this.$nuxt.$emit('show-alert', {
+          color: 'orange',
+          type: 'warning',
           message: 'Los datos son incorrectos',
-          icon: 'mdi-error'
+          icon: 'mdi-alert-circle'
         })
       }
     }
