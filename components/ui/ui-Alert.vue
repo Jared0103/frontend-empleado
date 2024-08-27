@@ -13,7 +13,7 @@ export default {
     color: { type: String, default: 'green' },
     type: { type: String, default: 'success' },
     icon: { type: String, default: '' },
-    meesage: { type: String, default: '' }
+    message: { type: String, default: '' }
   }
 }
 </script>

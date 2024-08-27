@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     loginBackend () {
-      console.log('@@@ variables', this.usuario, this.password)
+      console.log('@@@ variables', this.usuario)
       const isValid = this.$refs.form.validate()
       if (isValid) {
         const body = {
@@ -58,6 +58,15 @@ export default {
           .catch((error) => {
             console.error('Error en el login:', error)
           })
+      } else {
+        // comentario
+        this.$emit('show-alert', {
+          showAlert: true,
+          color: 'red',
+          type: 'error',
+          message: 'Los datos son incorrectos',
+          icon: 'mdi-error'
+        })
       }
     }
   }
