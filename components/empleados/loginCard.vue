@@ -8,24 +8,21 @@
       </v-row>
     </v-card-title>
     <v-card-text class="mt-4 mb-4 pt-4 pb-4">
-      <div class="textFields">
-        <v-row style="width: 100%">
-          <v-text-field v-model="usuario" :rules="size" solo />
-        </v-row>
-        <v-row style="width: 100%">
-          <v-text-field v-model="password" :rules="size" type="password"  solo />
-        </v-row>
-      </div>
-    </v-card-text>
-    <v-card-text>
-      <v-row>
-        <v-text-field v-model="üsuario" />
-      </v-row>
+      <v-form ref="form">
+        <div class="textFields">
+          <v-row style="width: 100%">
+            <v-text-field v-model="usuario" :rules="size" solo />
+          </v-row>
+          <v-row style="width: 100%">
+            <v-text-field v-model="password" :rules="size" type="password" solo />
+          </v-row>
+        </div>
+      </v-form>
     </v-card-text>
     <v-card-actions>
       <v-row align="center" justify="center">
-        <v-btn elevation="0" color="deep-orange-lighten-5">
-          <span style="text-transform: none; color:#F4511E ;"> <!--me hace falta una aprte dcódigo aqui jajas-->
+        <v-btn elevation="0" color="deep-orange-lighten-5" @click="loginBackend">
+          <span style="text-transform: none; color:#F4511E;">
             Login
           </span>
         </v-btn>
@@ -41,26 +38,35 @@ export default {
       usuario: '',
       password: '',
       size: [
-        v => v.trim().length === 0 || 'No puede estar vacio'
+        v => v.trim().length !== 0 || 'No puede estar vacio'
       ]
     }
   },
   methods: {
     loginBackend () {
       console.log('@@@ variables', this.usuario, this.password)
-      const body = {
-        correo: this.usuario,
-        contrasena: this.password
+      const isValid = this.$refs.form.validate()
+      if (isValid) {
+        const body = {
+          correo: this.usuario,
+          contrasena: this.password
+        }
+        this.$axios.post('/login', body)
+          .then((response) => {
+            console.log('Login exitoso:', response.data)
+          })
+          .catch((error) => {
+            console.error('Error en el login:', error)
+          })
       }
-      this.$axios.post('/login', body)
     }
   }
 }
 </script>
 
 <style scoped>
-  .textFields{
-    width: 100%;
-    margin: 10px;
-  }
+.textFields {
+  width: 100%;
+  margin: 10px;
+}
 </style>
