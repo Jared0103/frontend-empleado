@@ -16,7 +16,6 @@ export default {
   layout: 'login',
   methods: {
     showAlert (data) {
-      console.log('🚀 ~ showAlert ~ data: ', data)
       this.$nuxt.$emit('show-alert', data)
     }
   }

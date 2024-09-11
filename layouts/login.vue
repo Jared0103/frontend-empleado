@@ -24,7 +24,6 @@ export default {
   },
   created () {
     this.$nuxt.$on('show-alert', (data) => {
-      console.log('🚀 ~ layout ~ data:', data)
       this.showAlert = true
       this.color = data.color
       this.type = data.type

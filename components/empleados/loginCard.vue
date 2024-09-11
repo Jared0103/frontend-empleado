@@ -43,30 +43,35 @@ export default {
     }
   },
   methods: {
-    loginBackend () {
-      console.log('@@@ variables', this.usuario)
+    async loginBackend () {
       const isValid = this.$refs.form.validate()
       if (isValid) {
         const body = {
           correo: this.usuario,
           contrasena: this.password
         }
-        this.$axios.post('/login', body)
-          .then((response) => {
-            console.log('Login exitoso:', response.data)
-            // Aquí podrías redirigir al usuario o hacer alguna otra acción
+
+        // Login con auth
+        await this.$auth.loginWith('local', {
+          data: body
+        }).then((response) => {
+          this.$emit('show-alert', {
+            color: 'green',
+            type: 'success',
+            message: 'Login exitoso. ¡Bienvenido!',
+            icon: 'mdi-check-circle'
           })
-          .catch((error) => {
-            console.error('Error en el login:', error)
-            const errorMessage = error.response?.data?.message || 'Error en el login. Inténtelo de nuevo.'
-            // Emitir el evento para mostrar la alerta con el error del backend
-            this.$nuxt.$emit('show-alert', {
-              color: 'red',
-              type: 'error',
-              message: errorMessage,
-              icon: 'mdi-alert-circle'
-            })
+          this.$router.push('/dashboard')
+        }).catch((error) => {
+          const errorMessage = error.response?.data?.message || 'Error en el login. Inténtelo de nuevo.'
+          // Emitir el evento para mostrar la alerta con el error del backend
+          this.$nuxt.$emit('show-alert', {
+            color: 'red',
+            type: 'error',
+            message: errorMessage,
+            icon: 'mdi-alert-circle'
           })
+        })
       } else {
         // Emitir el evento para mostrar una alerta de validación
         this.$nuxt.$emit('show-alert', {
