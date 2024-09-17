@@ -126,6 +126,7 @@ export default {
     },
     actualizaTabla () {
       this.ShowBorrar = false
+      this.showCrear = false
       this.idEmpleado = null
       this.loadEmpleados()
     },
